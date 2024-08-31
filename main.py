@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, QLineEdit, QPushButton, QComboBox
 
 
 import sys
@@ -22,6 +22,9 @@ class AgeCalculator(QWidget):
         calculate_button.clicked.connect(self.calculate_speed)
         self.output_label = QLabel('')
 
+        self.combo = QComboBox()
+        self.combo.addItems(['Imperial (miles)', 'Metric (km)'])
+
         # add widgets to grid
         grid.addWidget(distance_label, 0, 0)
         grid.addWidget(self.distance_line_edit, 0, 1)
@@ -29,14 +32,19 @@ class AgeCalculator(QWidget):
         grid.addWidget(self.time_line_edit, 1, 1)
         grid.addWidget(calculate_button, 2, 1, 1, 1)
         grid.addWidget(self.output_label, 3, 0, 1, 2)
+        grid.addWidget(self.combo, 0, 3)
 
         self.setLayout(grid)
 
     def calculate_speed(self):
+        if self.combo.currentText() == 'Imperial (miles)':
+            unit = 'mph'
+        else:
+            unit = 'km/h'
         distance = self.distance_line_edit.text()
         time = self.time_line_edit.text()
         speed = float(distance) / float(time)
-        self.output_label.setText(f'Average Speed: {speed} km/h')
+        self.output_label.setText(f'Average Speed: {speed} {unit}')
 
 
 app = QApplication(sys.argv)
